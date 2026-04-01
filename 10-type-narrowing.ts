@@ -1,6 +1,4 @@
-const inputEl = document.getElementById('user-name')
-
-console.log(inputEl.value) // This line is unsafe because inputEl might be null
+const inputEl = document.getElementById('user-name')  as HTMLInputElement | null
 
 if (!inputEl) {
     throw new Error('Element not found!');
