@@ -2,24 +2,36 @@
 let a: null;
 
 a = null
-// a = "Hi"
+console.log('a:', a)
+// @ts-expect-error
+a = "Hi"
 
 let b: null | string
 
 b = null
+console.log('b:', b)
 b = "Hi"
-// b = 10
+console.log('b:', b)
+// @ts-expect-error
+b = 10
 
 // Special Type - undefined
 let c: undefined;
 
 c = undefined
-// c = null
-// c = "Hi"
+console.log('c:', c)
+// @ts-expect-error
+c = null
+// @ts-expect-error
+c = "Hi"
 
 let d: undefined | string
 
 d = undefined
+console.log('d:', d)
 d = "Hi"
-// d = null
-// d = 10
+console.log('d:', d)
+// @ts-expect-error
+d = null
+// @ts-expect-error
+d = 10
