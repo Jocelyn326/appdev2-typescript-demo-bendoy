@@ -1,11 +1,21 @@
 (() => {
     // Literal Types (Alternative to Enum)
-    let userRole: 'admin' | 'guess' | 'teacher' | 'student' = 'admin'
+    type UserRole = 'admin' | 'guest' | 'teacher' | 'student';
+   
+    let userRole: UserRole = 'admin';
 
-    userRole = 'guess'
-    // anotherUserRole = 'superadmin'
+    userRole = 'guest';    // anotherUserRole = 'superadmin'
 
-    function access(role: 'admin' | 'guess' | 'teacher' | 'student') {
-        // ...
+    let anotherUserRole: UserRole = 'admin';
+
+    function access(role: UserRole) {
+        if (role === 'admin') {
+            console.log('Full access');
+        } else {
+            console.log('Limited access');
+        }
     }
-})
+
+    access(userRole)
+    access(anotherUserRole)
+})()
