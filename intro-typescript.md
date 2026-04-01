@@ -57,3 +57,33 @@ Covers arrays with union types, object typing with nested properties, and the `R
 Introduces enums, specifically numeric enums, and shows how to assign and look up `enum` values.
 
 **Summary:** I used a numeric enum where `SuperAdmin = 1`, `Admin = 2`, `Teacher = 3`, and `Student = 4`. I set `userRole = 4` and used `Role[userRole]` to look up the name, which printed `Student` in the console. This is called a reverse lookup and it only works with numeric enums, not string enums. Enums are useful when you have a fixed set of choices like user roles, because they give each option a clear name instead of just using a plain number that is hard to understand.
+
+## 06-alternative-to-enum.ts
+Demonstrates **literal types** as a simpler alternative to enums using union types.
+
+**Summary:** Instead of using an enum, I created a `UserRole` type using `'admin' | 'guest' | 'teacher' | 'student'`. This restricts the variable to only those exact string values. I set `userRole = 'admin'` then reassigned it to `'guest'`, both valid. I also wrote an `access()` function that accepts a `UserRole` parameter and prints `'Full access'` for admin and `'Limited access'` for everyone else. Calling `access(userRole)` printed `Limited access` and `access(anotherUserRole)` printed `Full access`. Literal types are cleaner and lighter than enums for simple fixed-value scenarios.
+
+## 07-custom-type-role.ts
+Covers **type aliases** and **custom types** using the `type` keyword, including complex object type definitions.
+
+**Summary:** I used the `type` keyword to create a reusable `UserRole` type with values `'superadmin' | 'admin' | 'moderator' | 'user' | 'guest'`. I also defined a `User` object type that uses `UserRole` as the type for its `role` property. Assigning `userRole = 'teacher'` or `userRole = 0` caused errors because those values are not part of `UserRole`. Inside the `access()` function, reassigning `role` to `'superadmin'` or `'admin'` was fine, but assigning `0`, `true`, or `'teacher'` all caused errors. The `@ts-expect-error` comment suppresses the error on the next line, which is useful for intentionally testing invalid assignments.
+
+## 08-functions.ts
+Explores **function return types**, `void`, `never`, **function types**, and using functions inside object types.
+
+**Summary:** I typed the `add()` function to return `number`, though TypeScript can infer it automatically. The `log()` function returns `void` meaning it does something but returns nothing meaningful. The `logAndThrow()` function returns `never` because it always throws an error and never finishes normally. I also used a function type `(m: string) => void` as a callback parameter in `performJob()`, which is better practice than using the generic `Function` type. Finally, I defined a `User` type with a `greet` method typed as `() => string`, and the method used `this.name` to return the user's name.
+
+## 09-special-types.ts
+Covers the special types `null` and `undefined` and how to use union types to allow both.
+
+**Summary:** I declared `a` as strictly `null`, so assigning `"Hi"` to it caused an error. For `b`, I used `null | string` which allowed both `null` and `"Hi"` but not a number. The same pattern applied to `undefined` — `c` was strictly `undefined`, while `d` accepted `undefined | string`. Assigning `null` to `c` or `d` caused an error because `null` and `undefined` are different types in TypeScript when `strict` mode is on. This file shows how to be precise about what a variable is allowed to hold.
+
+## 10-type-narrowing.ts
+Demonstrates **type narrowing**, **non-null assertion**, **optional chaining**, and **type casting**.
+
+**Summary:** I used `document.getElementById('user-name') as HTMLInputElement | null` to cast the result to a specific type. Then I used an `if (!inputEl)` check to throw an error if the element was not found, which narrows the type to `HTMLInputElement` after the check so I could safely access `inputEl.value`. The commented-out code shows two alternatives: the non-null assertion operator `!` which tells TypeScript the value will never be null, and optional chaining `?.` which safely accesses a property only if the value is not null or undefined. Type casting with `as` is useful when TypeScript cannot automatically determine the exact type.
+
+## 11-optional.ts
+Covers **optional parameters**, **optional object properties**, and the **nullish coalescing** `??` vs `||` operators.
+
+**Summary:** I wrote a `generateError()` function where `msg` is optional using `msg?: string`, so calling it without an argument is valid. Inside an IIFE, I defined a `User` type where `role` is optional using `role?: 'admin' | 'guess'`, meaning the `user` object does not need to include it. For nullish coalescing, I set `input = ''` and used `input || false` which evaluates to `false` because `||` treats empty string as falsy. If I had used `??` instead, `didProvideInput` would have been `''` because `??` only falls back when the value is `null` or `undefined`, not an empty string. Use `||` when any falsy value should trigger the fallback, and use `??` when only `null` or `undefined` should.
